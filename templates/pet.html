@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{pet.name}}{% endblock %}
+
+{% block content %}
+
+<h1>{{pet.name}}</h1>
+<div class="row">
+  <div class="col-auto">
+    <img src="{{pet.photo_url}}" alt="{{pet.name}}" style="width: 12rem;" class="img-fluid">
+  </div>
+
+  <div class="col-12 col-lg-8">
+    <p class="fs-4">{{pet.age}} year old {{pet.species}}</p>
+    <form action="/{{pet.id}}" method="post" class="mb-4">
+      {{ form.hidden_tag() }}
+      {% for field in form if field.widget.input_type != 'hidden' and field.widget.input_type != 'checkbox' %}
+      <div class="form-group mb-1">
+        {{ field.label(class="form-label") }}
+        {{ field(class="form-control") }}
+
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      <div class="form-group">
+        {{ form.available.label(class="form-check-label") }}
+        {{ form.available(class="form-check-label") }}
+        <div class=" float-end"><a href="/" class="btn btn-outline-success">Home</a>
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+      </div>
+    </form>
+
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-success" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
+
+
+
+  </div>
+</div>
+
+{% endblock %}
